@@ -91,7 +91,7 @@ public struct HorizontalDialPicker<V>: View where V : BinaryFloatingPoint, V.Str
         .onChange(of: value) {
             self.scrollPosition = Int(value / step - range.lowerBound)
         }
-        .scrollTargetBehavior(.viewAligned(anchor: .center))
+        .modifier(ViewAlignedCenterBehavior())
         .scrollIndicators(.hidden)
         .scrollPosition(id: $scrollPosition, anchor: .center)
         .defaultScrollAnchor(.center, for: .alignment)
@@ -111,6 +111,16 @@ public struct HorizontalDialPicker<V>: View where V : BinaryFloatingPoint, V.Str
                 return Color.clear
             }
         })
+    }
+}
+
+struct ViewAlignedCenterBehavior: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content.scrollTargetBehavior(.viewAligned(anchor: .center))
+        } else {
+            content.scrollTargetBehavior(.viewAligned)
+        }
     }
 }
 
