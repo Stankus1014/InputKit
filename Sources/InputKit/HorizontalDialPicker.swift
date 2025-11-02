@@ -46,7 +46,7 @@ public struct HorizontalDialPicker<V>: View where V : BinaryFloatingPoint, V.Str
         ScrollView(.horizontal, content: {
             let totalTicks = Int((range.upperBound - range.lowerBound) / step) + 1
             
-            HStack(spacing: tickSpacing) {
+            LazyHStack(spacing: tickSpacing) {
                 ForEach(0..<totalTicks, id: \.self) { index in
                     let isSegment = index % tickSegmentCount == 0
                     let isTarget = index == scrollPosition
@@ -125,5 +125,5 @@ struct ViewAlignedCenterBehavior: ViewModifier {
 }
 
 #Preview {
-    HorizontalDialPicker(value: .constant(56), range: 0...100, step: 1)
+    HorizontalDialPicker(value: .constant(56), range: 0...800, step: 0.1)
 }
