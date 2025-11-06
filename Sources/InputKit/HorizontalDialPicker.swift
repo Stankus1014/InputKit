@@ -78,18 +78,15 @@ public struct HorizontalDialPicker<V>: View where V : BinaryFloatingPoint, V.Str
         .safeAreaPadding(.horizontal, (viewSize?.width ?? 0)/2 ) // so that the start and end ends at center
         .onChange(of: viewSize) { _, newSize in
             guard !initialized, let _ = newSize else { return }
-            self.scrollPosition = Int(value / step - range.lowerBound)
-            
-            // make sure scroll finishes before enabling haptic (Sensory feedback)
-            // because those feedbacks can get into the way of scrolling
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            self.scrollPosition = Int((value - range.lowerBound) / step)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.initialized = true
-            })
+            }
         }
-        // using initial: true cannot replace onAppear
-        // ie: will not set the correct initial position
+
         .onChange(of: value) {
-            self.scrollPosition = Int(value / step - range.lowerBound)
+            self.scrollPosition = Int((value - range.lowerBound) / step)
         }
         .modifier(ViewAlignedCenterBehavior())
         .scrollIndicators(.hidden)
@@ -125,5 +122,5 @@ struct ViewAlignedCenterBehavior: ViewModifier {
 }
 
 #Preview {
-    HorizontalDialPicker(value: .constant(56), range: 0...800, step: 0.1)
+    HorizontalDialPicker(value: .constant(74), range: 70...234, step: 0.1)
 }
