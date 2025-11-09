@@ -12,6 +12,7 @@ public struct HorizontalDialPicker<V>: View where V : BinaryFloatingPoint, V.Str
     var range: ClosedRange<V>
     var step: V
     var selectedTickColor: Color
+    var tickLabelColor: Color
     var tickSpacing: CGFloat = 8.0
     var tickSegmentCount: Int = 10
     var showSegmentValueLabel: Bool = true
@@ -26,6 +27,7 @@ public struct HorizontalDialPicker<V>: View where V : BinaryFloatingPoint, V.Str
         range: ClosedRange<V>,
         step: V,
         selectedTickColor: Color = .red,
+        tickLabelColor: Color = .black,
         tickSpacing: CGFloat = 8.0,
         tickSegmentCount: Int = 10,
         showSegmentValueLabel: Bool = true,
@@ -35,10 +37,12 @@ public struct HorizontalDialPicker<V>: View where V : BinaryFloatingPoint, V.Str
         self.range = range
         self.step = step
         self.selectedTickColor = selectedTickColor
+        self.tickLabelColor = tickLabelColor
         self.tickSpacing = tickSpacing
         self.tickSegmentCount = tickSegmentCount
         self.showSegmentValueLabel = showSegmentValueLabel
         self.labelSignificantDigit = labelSignificantDigit
+        
     }
 
     
@@ -63,6 +67,7 @@ public struct HorizontalDialPicker<V>: View where V : BinaryFloatingPoint, V.Str
                                 let value = Double(range.lowerBound + V(index) * step)
                                 Text("\(String(format: "%.\(labelSignificantDigit)f", value))")
                                     .font(.system(size: 12))
+                                    .foregroundStyle(self.tickLabelColor)
                                     .fontWeight(.semibold)
                                     .fixedSize() // required to avoid being cutoff horizontally
                                     .offset(y: 20)
